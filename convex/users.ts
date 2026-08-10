@@ -6,13 +6,23 @@ export const updateCurrentUser = mutation({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new ConvexError({ code: "UNAUTHENTICATED", message: "User not logged in" });
+      throw new ConvexError({
+        code: "UNAUTHENTICATED",
+        message: "User not logged in",
+      });
     }
+
+    // Check if we've already stored this identity before.
     const user = await ctx.db
       .query("users")
-      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .withIndex("by_token", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier),
+      )
       .unique();
-    if (user !== null) return user._id;
+    if (user !== null) {
+      return user._id;
+    }
+    // If it's a new identity, create a new User.
     return await ctx.db.insert("users", {
       name: identity.name,
       email: identity.email,
@@ -26,11 +36,17 @@ export const getCurrentUser = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new ConvexError({ code: "UNAUTHENTICATED", message: "Called getCurrentUser without authentication present" });
+      throw new ConvexError({
+        code: "UNAUTHENTICATED",
+        message: "Called getCurrentUser without authentication present",
+      });
     }
-    return await ctx.db
+    const user = await ctx.db
       .query("users")
-      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .withIndex("by_token", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier),
+      )
       .unique();
+    return user;
   },
 });

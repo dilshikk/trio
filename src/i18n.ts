@@ -19,17 +19,17 @@ export function isSupportedLocale(locale: string | undefined): locale is Support
   return !!locale && SUPPORTED_LOCALES_ARRAY.includes(locale as SupportedLocale);
 }
 
-export const SAVED_LOCALE =
-  typeof window !== "undefined"
-    ? (() => {
-        try {
-          const stored = localStorage.getItem("locale");
-          return stored && isSupportedLocale(stored) ? stored : null;
-        } catch {
-          return null;
-        }
-      })()
-    : null;
+function readSavedLocale(): SupportedLocale | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const stored = localStorage.getItem("locale");
+    return stored && isSupportedLocale(stored) ? stored : null;
+  } catch {
+    return null;
+  }
+}
+
+export const SAVED_LOCALE = readSavedLocale();
 
 export const SAVED_OR_DEFAULT_LOCALE: SupportedLocale = SAVED_LOCALE ?? DEFAULT_LOCALE;
 
@@ -81,7 +81,7 @@ const translationModules = import.meta.glob<{ default: Record<string, string> }>
 const resources: Record<string, Record<string, Record<string, string>>> = {};
 
 for (const [path, module] of Object.entries(translationModules)) {
-  const match = path.match(/\.\/locales\/([^\/]+)\/([^\/]+)\.json$/);
+  const match = path.match(/\.\/locales\/([^/]+)\/([^/]+)\.json$/);
   if (match) {
     const [, lng, ns] = match;
     if (!resources[lng]) {

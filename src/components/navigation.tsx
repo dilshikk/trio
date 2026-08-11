@@ -33,8 +33,11 @@ export default function Navigation() {
         <div className="relative flex items-center justify-between max-w-[1600px] mx-auto">
           <a
             href="#"
-            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-            className="flex items-center gap-3 group"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="flex items-center gap-3 group cursor-pointer"
           >
             <img
               src="https://hercules-cdn.com/file_exMhy8nexpXEXJmG0mlYSQKH"
@@ -46,44 +49,79 @@ export default function Navigation() {
           </a>
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a key={link.label} href={link.href}
-                onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
-                className="text-[11px] font-medium tracking-[0.18em] text-white/50 hover:text-white/90 transition-colors duration-300 uppercase"
-              >{link.label}</a>
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick(link.href);
+                }}
+                className="text-[11px] font-medium tracking-[0.18em] text-white/50 hover:text-white/90 transition-colors duration-300 uppercase cursor-pointer"
+              >
+                {link.label}
+              </a>
             ))}
           </div>
           <div className="hidden lg:flex items-center gap-4">
-            <button onClick={() => handleNavClick("#contact")}
-              className="text-[11px] font-semibold tracking-[0.2em] uppercase border border-white/20 text-white/80 hover:border-white/60 hover:text-white transition-all duration-300 px-5 py-2.5 rounded-sm"
-            >START A CONVERSATION</button>
+            <button
+              onClick={() => handleNavClick("#contact")}
+              className="text-[11px] font-semibold tracking-[0.2em] uppercase border border-white/20 text-white/80 hover:border-white/60 hover:text-white transition-all duration-300 px-5 py-2.5 rounded-sm cursor-pointer"
+            >
+              START A CONVERSATION
+            </button>
           </div>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden flex flex-col gap-[5px] p-2" aria-label="Toggle menu">
-            <motion.div animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 7 : 0 }} className="w-5 h-[1.5px] bg-white origin-center" />
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="lg:hidden flex flex-col gap-[5px] p-2 cursor-pointer"
+            aria-label="Toggle menu"
+          >
+            <motion.div
+              animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 7 : 0 }}
+              className="w-5 h-[1.5px] bg-white origin-center"
+            />
             <motion.div animate={{ opacity: menuOpen ? 0 : 1 }} className="w-5 h-[1.5px] bg-white" />
-            <motion.div animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -7 : 0 }} className="w-5 h-[1.5px] bg-white origin-center" />
+            <motion.div
+              animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -7 : 0 }}
+              className="w-5 h-[1.5px] bg-white origin-center"
+            />
           </button>
         </div>
       </motion.nav>
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] as const }}
             className="fixed inset-0 z-40 flex flex-col justify-center items-center gap-8 lg:hidden"
             style={{ background: "oklch(0.08 0 0 / 0.97)", backdropFilter: "blur(20px)" }}
           >
             {navLinks.map((link, i) => (
-              <motion.a key={link.label} href={link.href}
-                onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              <motion.a
+                key={link.label}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick(link.href);
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06, duration: 0.4 }}
-                className="text-3xl font-light tracking-[0.25em] text-white/70 hover:text-white transition-colors uppercase"
-              >{link.label}</motion.a>
+                className="text-3xl font-light tracking-[0.25em] text-white/70 hover:text-white transition-colors uppercase cursor-pointer"
+              >
+                {link.label}
+              </motion.a>
             ))}
-            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
               onClick={() => handleNavClick("#contact")}
-              className="mt-4 text-[11px] font-semibold tracking-[0.25em] uppercase border border-white/20 text-white/80 px-8 py-3"
-            >START A CONVERSATION</motion.button>
+              className="mt-4 text-[11px] font-semibold tracking-[0.25em] uppercase border border-white/20 text-white/80 px-8 py-3 cursor-pointer"
+            >
+              START A CONVERSATION
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>

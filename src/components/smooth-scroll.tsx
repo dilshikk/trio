@@ -3,7 +3,9 @@ import Lenis from "lenis";
 
 let lenisInstance: Lenis | null = null;
 
-export function getLenis() { return lenisInstance; }
+export function getLenis() {
+  return lenisInstance;
+}
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -13,9 +15,15 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       orientation: "vertical",
       smoothWheel: true,
     });
-    const raf = (time: number) => { lenisInstance?.raf(time); requestAnimationFrame(raf); };
+    const raf = (time: number) => {
+      lenisInstance?.raf(time);
+      requestAnimationFrame(raf);
+    };
     requestAnimationFrame(raf);
-    return () => { lenisInstance?.destroy(); lenisInstance = null; };
+    return () => {
+      lenisInstance?.destroy();
+      lenisInstance = null;
+    };
   }, []);
   return <>{children}</>;
 }

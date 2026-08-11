@@ -3,7 +3,6 @@ import { DefaultProviders } from "./components/providers/default.tsx";
 import AuthCallback from "./pages/auth/Callback.tsx";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import PreloaderDemo from "./pages/preloader-demo.tsx";
 import CustomCursor from "./components/custom-cursor.tsx";
 import SmoothScroll from "./components/smooth-scroll.tsx";
 
@@ -15,8 +14,8 @@ export default function App() {
           <CustomCursor />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/preloader-demo" element={<PreloaderDemo />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

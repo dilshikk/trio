@@ -30,6 +30,10 @@ function GlobeRing({ radius, rotation, color }: { radius: number; rotation: [num
   return (<mesh ref={ref} rotation={rotation}><torusGeometry args={[radius, 0.008, 8, 80]} /><meshBasicMaterial color={color} transparent opacity={0.35} /></mesh>);
 }
 
+// Suppress unused import warning
+void Sphere;
+void Torus;
+
 export default function LogisticsScene({ mouseX, mouseY }: Props) {
   const groupRef = useRef<THREE.Group>(null);
   const coreRef = useRef<THREE.Mesh>(null);
@@ -56,7 +60,7 @@ export default function LogisticsScene({ mouseX, mouseY }: Props) {
       <RouteLine start={[2, -0.3, 0.3]} end={[0, 0, 0]} color="#6395ff" />
       <RouteLine start={[-1, -1.5, 0.8]} end={[0, 0, 0]} color="#4060cc" />
       <RouteLine start={[1.5, 1.2, -0.5]} end={[0, 0, 0]} color="#4060cc" />
-      {([[-2, 0.5, 0.5], [2, -0.3, 0.3], [-1, -1.5, 0.8], [1.5, 1.2, -0.5], [0.8, -2, 0.3], [-1.8, -0.8, 0.6]] as [number, number, number][]).map((pos, i) => (<mesh key={i} position={pos}><sphereGeometry args={[0.04, 8, 8]} /><meshBasicMaterial color="#6395ff" /></mesh>))}
+      {([ [-2, 0.5, 0.5], [2, -0.3, 0.3], [-1, -1.5, 0.8], [1.5, 1.2, -0.5], [0.8, -2, 0.3], [-1.8, -0.8, 0.6] ] as [number, number, number][]).map((pos, i) => (<mesh key={i} position={pos}><sphereGeometry args={[0.04, 8, 8]} /><meshBasicMaterial color="#6395ff" /></mesh>))}
       <LogisticsParticles />
     </group>
   );

@@ -1,17 +1,21 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 const services = [
-  { number: "01", label: "LOGISTICS", headline: "GLOBAL\nMOVEMENT.", description: "We engineer end-to-end logistics networks that operate with precision across borders, industries, and time zones. From freight management to last-mile delivery, we move what matters.", accent: "oklch(0.65 0.2 240)", accentHex: "#6395ff", pillars: ["FREIGHT MANAGEMENT", "SUPPLY CHAIN", "CUSTOMS & COMPLIANCE", "LAST-MILE"], id: "logistics" },
-  { number: "02", label: "ACCOUNTING", headline: "PRECISION\nBEHIND DATA.", description: "Financial clarity that empowers decisive action. Our accounting solutions integrate seamlessly with your business operations, ensuring accuracy, compliance, and strategic insight at every level.", accent: "oklch(0.78 0.15 75)", accentHex: "#dcb25a", pillars: ["FINANCIAL REPORTING", "TAX STRATEGY", "AUDIT SUPPORT", "BUSINESS ANALYTICS"], id: "accounting" },
-  { number: "03", label: "CONSULTING", headline: "STRATEGY\nTHAT GROWS.", description: "Strategic consulting that transforms complexity into clear direction and resilient systems for measurable growth.", accent: "oklch(0.78 0 0)", accentHex: "#c4c4c4", pillars: ["BUSINESS STRATEGY", "PROCESS DESIGN", "GROWTH PLANNING", "TRANSFORMATION"], id: "consulting" },
+  { number: "01", tKey: "1", accent: "oklch(0.65 0.2 240)", accentHex: "#6395ff", id: "logistics" },
+  { number: "02", tKey: "2", accent: "oklch(0.78 0.15 75)", accentHex: "#dcb25a", id: "accounting" },
+  { number: "03", tKey: "3", accent: "oklch(0.78 0 0)", accentHex: "#c4c4c4", id: "consulting" },
 ];
 
 function ServiceItem({ service, index }: { service: typeof services[0]; index: number }) {
+  const { t } = useTranslation("common");
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const pillars = t(`services.${service.tKey}.pillars`).split(",");
+
   return (
     <motion.div ref={ref} id={service.id} style={{ opacity }} className={`relative flex flex-col ${index % 2 === 1 ? "lg:flex-row-reverse" : "lg:flex-row"} gap-12 lg:gap-20 items-center min-h-[70vh] py-24 border-t border-white/6`}>
       <motion.div style={{ y }} className="flex-1 relative">
@@ -29,16 +33,16 @@ function ServiceItem({ service, index }: { service: typeof services[0]; index: n
         <div className="flex items-center gap-3">
           <span className="text-[10px] font-semibold tracking-[0.3em] uppercase" style={{ color: service.accent }}>{service.number}</span>
           <div className="h-[1px] w-8 bg-white/20" />
-          <span className="text-[10px] tracking-[0.2em] text-white/30 uppercase">{service.label}</span>
+          <span className="text-[10px] tracking-[0.2em] text-white/30 uppercase">{t(`services.${service.tKey}.label`)}</span>
         </div>
-        <h2 className="text-[clamp(40px,5.5vw,80px)] font-bold leading-[0.9] tracking-[-0.03em] text-white whitespace-pre-line">{service.headline}</h2>
-        <p className="text-[15px] leading-relaxed text-white/50 font-light max-w-sm">{service.description}</p>
+        <h2 className="text-[clamp(40px,5.5vw,80px)] font-bold leading-[0.9] tracking-[-0.03em] text-white whitespace-pre-line">{t(`services.${service.tKey}.headline`)}</h2>
+        <p className="text-[15px] leading-relaxed text-white/50 font-light max-w-sm">{t(`services.${service.tKey}.description`)}</p>
         <div className="flex flex-wrap gap-2">
-          {service.pillars.map((p) => (<span key={p} className="text-[9px] tracking-[0.18em] uppercase px-3 py-1.5 border" style={{ color: `${service.accentHex}90`, borderColor: `${service.accentHex}25` }}>{p}</span>))}
+          {pillars.map((p) => (<span key={p} className="text-[9px] tracking-[0.18em] uppercase px-3 py-1.5 border" style={{ color: `${service.accentHex}90`, borderColor: `${service.accentHex}25` }}>{p.trim()}</span>))}
         </div>
         <a href={`#${service.id}-detail`} onClick={(e) => { e.preventDefault(); document.querySelector(`#${service.id}-detail`)?.scrollIntoView({ behavior: "smooth" }); }} data-cursor="EXPLORE" className="group inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.25em] uppercase text-white/60 hover:text-white transition-colors duration-300">
           <span className="w-6 h-[1px] group-hover:w-12 transition-all duration-500" style={{ background: service.accentHex }} />
-          LEARN MORE
+          {t("services.learnMore")}
         </a>
       </div>
     </motion.div>
@@ -46,11 +50,12 @@ function ServiceItem({ service, index }: { service: typeof services[0]; index: n
 }
 
 export default function ServicesSection() {
+  const { t } = useTranslation("common");
   return (
     <section className="relative px-6 md:px-16 lg:px-24 max-w-[1400px] mx-auto">
       <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] as const }} className="pt-28 pb-4">
-        <p className="text-[10px] tracking-[0.35em] text-white/30 uppercase mb-4">THREE DISCIPLINES</p>
-        <h2 className="text-[clamp(36px,5vw,68px)] font-bold tracking-[-0.03em] text-white leading-[0.95]">ONE COMPLETE<br /><span className="text-white/30">BUSINESS SOLUTION.</span></h2>
+        <p className="text-[10px] tracking-[0.35em] text-white/30 uppercase mb-4">{t("services.eyebrow")}</p>
+        <h2 className="text-[clamp(36px,5vw,68px)] font-bold tracking-[-0.03em] text-white leading-[0.95]">{t("services.title")}<br /><span className="text-white/30">{t("services.titleFaded")}</span></h2>
       </motion.div>
       {services.map((service, i) => (<ServiceItem key={service.id} service={service} index={i} />))}
     </section>

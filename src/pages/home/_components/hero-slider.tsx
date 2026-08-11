@@ -1,19 +1,21 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { Canvas } from "@react-three/fiber";
+import { useTranslation } from "react-i18next";
 import LogisticsScene from "./scenes/logistics-scene.tsx";
 import AccountingScene from "./scenes/accounting-scene.tsx";
 import ConsultingScene from "./scenes/consulting-scene.tsx";
 
 type SlideIndex = 0 | 1 | 2;
 
-const slides = [
-  { id: 0, label: "01", headline: "LOGISTICS", subheadline: "MOVE BUSINESS\nFORWARD.", description: "Global logistics solutions designed for efficient, reliable and seamless movement.", cta: "EXPLORE LOGISTICS", accent: "oklch(0.65 0.2 240)", accentRgb: "99, 149, 255", href: "#logistics" },
-  { id: 1, label: "02", headline: "ACCOUNTING", subheadline: "PRECISION BEHIND\nEVERY DECISION.", description: "Accurate financial management and accounting solutions built around your business.", cta: "EXPLORE ACCOUNTING", accent: "oklch(0.78 0.15 75)", accentRgb: "220, 178, 90", href: "#accounting" },
-  { id: 2, label: "03", headline: "CONSULTING", subheadline: "STRATEGY THAT\nMOVES FORWARD.", description: "Strategic consulting that transforms complexity into clear direction and measurable growth.", cta: "EXPLORE CONSULTING", accent: "oklch(0.78 0 0)", accentRgb: "196, 196, 196", href: "#consulting" },
+const SLIDE_ACCENTS = [
+  { accent: "oklch(0.65 0.2 240)", accentRgb: "99, 149, 255", href: "#logistics" },
+  { accent: "oklch(0.78 0.15 75)", accentRgb: "220, 178, 90", href: "#accounting" },
+  { accent: "oklch(0.78 0 0)", accentRgb: "196, 196, 196", href: "#consulting" },
 ] as const;
 
 export default function HeroSlider() {
+  const { t } = useTranslation("common");
   const [activeSlide, setActiveSlide] = useState<SlideIndex>(0);
   const [prevSlide, setPrevSlide] = useState<SlideIndex | null>(null);
   const [transitioning, setTransitioning] = useState(false);
@@ -48,8 +50,9 @@ export default function HeroSlider() {
     return () => clearInterval(timer);
   }, [activeSlide, goToSlide]);
 
-  const current = slides[activeSlide];
   void prevSlide;
+  const current = SLIDE_ACCENTS[activeSlide];
+  const slideNum = activeSlide + 1;
 
   return (
     <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-[oklch(0.06_0_0)]" style={{ minHeight: "100svh" }}>
@@ -71,19 +74,19 @@ export default function HeroSlider() {
         <AnimatePresence mode="wait">
           <motion.div key={`content-${activeSlide}`} className="max-w-[1400px] w-full">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] as const }} className="flex items-center gap-3 mb-6">
-              <span className="text-[11px] font-semibold tracking-[0.3em] uppercase" style={{ color: current.accent }}>{current.label}</span>
+              <span className="text-[11px] font-semibold tracking-[0.3em] uppercase" style={{ color: current.accent }}>{t(`hero.slide${slideNum}.label`)}</span>
               <div className="h-[1px] w-12 bg-white/20" />
-              <span className="text-[11px] tracking-[0.2em] text-white/30 uppercase">{current.headline}</span>
+              <span className="text-[11px] tracking-[0.2em] text-white/30 uppercase">{t(`hero.slide${slideNum}.headline`)}</span>
             </motion.div>
             <div className="overflow-hidden">
-              <motion.h1 initial={{ y: 120, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -80, opacity: 0 }} transition={{ duration: 1.0, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }} className="text-[clamp(48px,8vw,130px)] font-bold leading-[0.92] tracking-[-0.03em] text-white mb-6 whitespace-pre-line">{current.subheadline}</motion.h1>
+              <motion.h1 initial={{ y: 120, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -80, opacity: 0 }} transition={{ duration: 1.0, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }} className="text-[clamp(48px,8vw,130px)] font-bold leading-[0.92] tracking-[-0.03em] text-white mb-6 whitespace-pre-line">{t(`hero.slide${slideNum}.subheadline`)}</motion.h1>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-end gap-6 sm:gap-16 mt-8">
-              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 0.55, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.8, delay: 0.45, ease: [0.25, 0.1, 0.25, 1] as const }} className="text-[14px] leading-relaxed max-w-xs font-light text-white">{current.description}</motion.p>
+              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 0.55, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.8, delay: 0.45, ease: [0.25, 0.1, 0.25, 1] as const }} className="text-[14px] leading-relaxed max-w-xs font-light text-white">{t(`hero.slide${slideNum}.description`)}</motion.p>
               <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={{ duration: 0.8, delay: 0.55, ease: [0.25, 0.1, 0.25, 1] as const }}>
                 <a href={current.href} onClick={(e) => { e.preventDefault(); document.querySelector(current.href)?.scrollIntoView({ behavior: "smooth" }); }} className="group flex items-center gap-3 text-[11px] font-semibold tracking-[0.25em] uppercase text-white/80 hover:text-white transition-colors duration-300" data-cursor="EXPLORE">
                   <span className="w-8 h-[1px] group-hover:w-14 transition-all duration-500 ease-out" style={{ background: current.accent }} />
-                  {current.cta}
+                  {t(`hero.slide${slideNum}.cta`)}
                   <svg width="10" height="10" viewBox="0 0 10 10" className="group-hover:translate-x-1 transition-transform duration-300"><path d="M1 9L9 1M9 1H3M9 1V7" stroke="currentColor" strokeWidth="1.2" fill="none" /></svg>
                 </a>
               </motion.div>
@@ -92,10 +95,10 @@ export default function HeroSlider() {
         </AnimatePresence>
       </div>
       <div className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-[20] flex flex-col items-center gap-5">
-        {slides.map((slide, i) => (
-          <button key={slide.id} onClick={() => goToSlide(i as SlideIndex)} className="flex flex-col items-center gap-1.5 group" aria-label={`Slide ${slide.label}`}>
+        {SLIDE_ACCENTS.map((slide, i) => (
+          <button key={i} onClick={() => goToSlide(i as SlideIndex)} className="flex flex-col items-center gap-1.5 group" aria-label={`Slide ${i + 1}`}>
             <motion.div animate={{ height: activeSlide === i ? 32 : 16, opacity: activeSlide === i ? 1 : 0.3 }} transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const }} className="w-[1.5px] rounded-full" style={{ background: activeSlide === i ? slide.accent : "white" }} />
-            <span className="text-[9px] font-semibold tracking-[0.15em] transition-opacity duration-300" style={{ color: activeSlide === i ? slide.accent : "white", opacity: activeSlide === i ? 1 : 0.3 }}>{slide.label}</span>
+            <span className="text-[9px] font-semibold tracking-[0.15em] transition-opacity duration-300" style={{ color: activeSlide === i ? slide.accent : "white", opacity: activeSlide === i ? 1 : 0.3 }}>{`0${i + 1}`}</span>
           </button>
         ))}
       </div>
@@ -103,7 +106,7 @@ export default function HeroSlider() {
         <motion.div key={`progress-${activeSlide}`} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 7, ease: "linear" as const }} className="h-full origin-left" style={{ background: current.accent }} />
       </div>
       <div className="absolute bottom-8 md:bottom-10 right-6 md:right-10 z-[20] flex items-center gap-2 text-[11px] tracking-[0.2em] text-white/30 font-light">
-        <AnimatePresence mode="wait"><motion.span key={activeSlide} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.4 }} style={{ color: current.accent }}>{current.label}</motion.span></AnimatePresence>
+        <AnimatePresence mode="wait"><motion.span key={activeSlide} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.4 }} style={{ color: current.accent }}>{`0${slideNum}`}</motion.span></AnimatePresence>
         <span>/</span><span>03</span>
       </div>
     </section>

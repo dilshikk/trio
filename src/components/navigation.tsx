@@ -1,17 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 const navLinks = [
-  { label: "LOGISTICS", href: "#logistics" },
-  { label: "ACCOUNTING", href: "#accounting" },
-  { label: "CONSULTING", href: "#consulting" },
-  { label: "ABOUT", href: "#about" },
-  { label: "CONTACT", href: "#contact" },
+  { key: "nav.logistics", href: "#logistics" },
+  { key: "nav.accounting", href: "#accounting" },
+  { key: "nav.consulting", href: "#consulting" },
+  { key: "nav.about", href: "#about" },
+  { key: "nav.contact", href: "#contact" },
 ];
+
+import LocaleSwitcher from "@/components/locale-switcher.tsx";
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
+  const { t } = useTranslation("common");
   const bgOpacity = useTransform(scrollY, [0, 120], [0, 1]);
 
   const handleNavClick = (href: string) => {
@@ -33,10 +37,7 @@ export default function Navigation() {
         <div className="relative flex items-center justify-between max-w-[1600px] mx-auto">
           <a
             href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
             className="flex items-center gap-3 group cursor-pointer"
           >
             <img
@@ -50,41 +51,36 @@ export default function Navigation() {
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
-                key={link.label}
+                key={link.key}
                 href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(link.href);
-                }}
+                onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                 className="text-[11px] font-medium tracking-[0.18em] text-white/50 hover:text-white/90 transition-colors duration-300 uppercase cursor-pointer"
               >
-                {link.label}
+                {t(link.key)}
               </a>
             ))}
           </div>
           <div className="hidden lg:flex items-center gap-4">
+            <LocaleSwitcher />
             <button
               onClick={() => handleNavClick("#contact")}
               className="text-[11px] font-semibold tracking-[0.2em] uppercase border border-white/20 text-white/80 hover:border-white/60 hover:text-white transition-all duration-300 px-5 py-2.5 rounded-sm cursor-pointer"
             >
-              START A CONVERSATION
+              {t("nav.cta")}
             </button>
           </div>
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden flex flex-col gap-[5px] p-2 cursor-pointer"
-            aria-label="Toggle menu"
-          >
-            <motion.div
-              animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 7 : 0 }}
-              className="w-5 h-[1.5px] bg-white origin-center"
-            />
-            <motion.div animate={{ opacity: menuOpen ? 0 : 1 }} className="w-5 h-[1.5px] bg-white" />
-            <motion.div
-              animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -7 : 0 }}
-              className="w-5 h-[1.5px] bg-white origin-center"
-            />
-          </button>
+          <div className="flex lg:hidden items-center gap-3">
+            <LocaleSwitcher />
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="flex flex-col gap-[5px] p-2 cursor-pointer"
+              aria-label="Toggle menu"
+            >
+              <motion.div animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 7 : 0 }} className="w-5 h-[1.5px] bg-white origin-center" />
+              <motion.div animate={{ opacity: menuOpen ? 0 : 1 }} className="w-5 h-[1.5px] bg-white" />
+              <motion.div animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -7 : 0 }} className="w-5 h-[1.5px] bg-white origin-center" />
+            </button>
+          </div>
         </div>
       </motion.nav>
       <AnimatePresence>
@@ -99,18 +95,15 @@ export default function Navigation() {
           >
             {navLinks.map((link, i) => (
               <motion.a
-                key={link.label}
+                key={link.key}
                 href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(link.href);
-                }}
+                onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06, duration: 0.4 }}
                 className="text-3xl font-light tracking-[0.25em] text-white/70 hover:text-white transition-colors uppercase cursor-pointer"
               >
-                {link.label}
+                {t(link.key)}
               </motion.a>
             ))}
             <motion.button
@@ -120,7 +113,7 @@ export default function Navigation() {
               onClick={() => handleNavClick("#contact")}
               className="mt-4 text-[11px] font-semibold tracking-[0.25em] uppercase border border-white/20 text-white/80 px-8 py-3 cursor-pointer"
             >
-              START A CONVERSATION
+              {t("nav.cta")}
             </motion.button>
           </motion.div>
         )}

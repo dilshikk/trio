@@ -46,44 +46,54 @@ function saveSubmissions(data) {
   fs.writeFileSync(SUBMISSIONS_PATH, JSON.stringify(data, null, 2), "utf-8");
 }
 
+// Parse allowed origins from env (comma-separated) or use defaults
+const ALLOWED_ORIGINS = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",").map((o) => o.trim())
+  : ["http://localhost:5173"];
+
 app.use(express.json());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: (origin, callback) => {
+    // Allow requests with no origin (curl, mobile apps, same-origin)
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
   credentials: true,
 }));
 
 function requireAdmin(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "\u041d\u0435 \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u043e\u0432\u0430\u043d" });
+    return res.status(401).json({ error: "Не авторизован" });
   }
   const jwtSecret = process.env.JWT_SECRET;
-  if (!jwtSecret) return res.status(500).json({ error: "\u0421\u0435\u0440\u0432\u0435\u0440 \u043d\u0435 \u043d\u0430\u0441\u0442\u0440\u043e\u0435\u043d" });
+  if (!jwtSecret) return res.status(500).json({ error: "Сервер не настроен" });
   try {
     const payload = jwt.verify(authHeader.slice(7), jwtSecret);
-    if (payload.role !== "admin") return res.status(403).json({ error: "\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430" });
+    if (payload.role !== "admin") return res.status(403).json({ error: "Нет доступа" });
     req.adminEmail = payload.email;
     next();
   } catch {
-    return res.status(401).json({ error: "\u0422\u043e\u043a\u0435\u043d \u043d\u0435\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0442\u0435\u043b\u0435\u043d" });
+    return res.status(401).json({ error: "Токен недействителен" });
   }
 }
 
 // POST /api/auth/login
 app.post("/api/auth/login", (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) return res.status(400).json({ error: "Email \u0438 \u043f\u0430\u0440\u043e\u043b\u044c \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b" });
+  if (!email || !password) return res.status(400).json({ error: "Email и пароль обязательны" });
   const adminEmail = process.env.ADMIN_EMAIL;
   const adminPassword = process.env.ADMIN_PASSWORD;
   const jwtSecret = process.env.JWT_SECRET;
   if (!adminEmail || !adminPassword || !jwtSecret) {
-    return res.status(500).json({ error: "\u0421\u0435\u0440\u0432\u0435\u0440 \u043d\u0435 \u043d\u0430\u0441\u0442\u0440\u043e\u0435\u043d" });
+    return res.status(500).json({ error: "Сервер не настроен" });
   }
   if (email.toLowerCase() !== adminEmail.toLowerCase()) {
-    return res.status(401).json({ error: "\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 email \u0438\u043b\u0438 \u043f\u0430\u0440\u043e\u043b\u044c" });
+    return res.status(401).json({ error: "Неверный email или пароль" });
   }
   if (!verifyPassword(password, adminPassword)) {
-    return res.status(401).json({ error: "\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 email \u0438\u043b\u0438 \u043f\u0430\u0440\u043e\u043b\u044c" });
+    return res.status(401).json({ error: "Неверный email или пароль" });
   }
   const token = jwt.sign({ role: "admin", email }, jwtSecret, { expiresIn: "8h" });
   return res.json({ token });
@@ -103,7 +113,7 @@ app.get("/api/site-texts/:locale", (req, res) => {
 // POST /api/site-texts
 app.post("/api/site-texts", requireAdmin, (req, res) => {
   const { locale, key, value } = req.body;
-  if (!locale || !key) return res.status(400).json({ error: "locale \u0438 key \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b" });
+  if (!locale || !key) return res.status(400).json({ error: "locale и key обязательны" });
   const db = loadTexts();
   if (!db[locale]) db[locale] = {};
   if (value === "" || value == null) { delete db[locale][key]; }
@@ -116,7 +126,7 @@ app.post("/api/site-texts", requireAdmin, (req, res) => {
 app.post("/api/submissions", (req, res) => {
   const { name, company, email, message, service } = req.body;
   if (!name || !email || !message) {
-    return res.status(400).json({ error: "\u041e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043f\u043e\u043b\u044f: name, email, message" });
+    return res.status(400).json({ error: "Обязательные поля: name, email, message" });
   }
   const submissions = loadSubmissions();
   const entry = {
@@ -143,7 +153,7 @@ app.get("/api/submissions", requireAdmin, (req, res) => {
 app.patch("/api/submissions/:id/read", requireAdmin, (req, res) => {
   const submissions = loadSubmissions();
   const item = submissions.find((s) => s.id === req.params.id);
-  if (!item) return res.status(404).json({ error: "\u041d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e" });
+  if (!item) return res.status(404).json({ error: "Не найдено" });
   item.read = true;
   saveSubmissions(submissions);
   return res.json({ ok: true });
@@ -153,7 +163,7 @@ app.patch("/api/submissions/:id/read", requireAdmin, (req, res) => {
 app.delete("/api/submissions/:id", requireAdmin, (req, res) => {
   const submissions = loadSubmissions();
   const idx = submissions.findIndex((s) => s.id === req.params.id);
-  if (idx === -1) return res.status(404).json({ error: "\u041d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e" });
+  if (idx === -1) return res.status(404).json({ error: "Не найдено" });
   submissions.splice(idx, 1);
   saveSubmissions(submissions);
   return res.json({ ok: true });
@@ -173,6 +183,7 @@ app.get("/api/stats", requireAdmin, (req, res) => {
   });
 });
 
+// Utility: hash password — only available when JWT_SECRET is not set
 app.get("/api/hash/:password", (req, res) => {
   if (process.env.JWT_SECRET) return res.status(403).json({ error: "forbidden" });
   return res.json({ hash: hashPassword(req.params.password) });
@@ -180,6 +191,7 @@ app.get("/api/hash/:password", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Admin API running on port ${PORT}`);
+  console.log(`Allowed origins: ${ALLOWED_ORIGINS.join(", ")}`);
   console.log(`ADMIN_EMAIL: ${process.env.ADMIN_EMAIL ? "set" : "NOT SET"}`);
   console.log(`ADMIN_PASSWORD: ${process.env.ADMIN_PASSWORD ? "set" : "NOT SET"}`);
   console.log(`JWT_SECRET: ${process.env.JWT_SECRET ? "set" : "NOT SET"}`);

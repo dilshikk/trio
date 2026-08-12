@@ -1,17 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAdminAuth } from "@/hooks/use-admin-auth.ts";
 import AdminLogin from "./_components/AdminLogin.tsx";
-import TextField from "./_components/text-field.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { LogOut, ExternalLink, Globe, Inbox, BarChart2, FileText, Trash2, Mail, MailOpen, RefreshCw } from "lucide-react";
-import { TEXT_GROUPS, DEFAULT_TEXTS } from "./_lib/text-groups.ts";
-import { SUPPORTED_LOCALES, type SupportedLocale } from "@/i18n";
+import { LogOut, ExternalLink, Inbox, BarChart2, Trash2, Mail, MailOpen, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 const API_BASE = import.meta.env.VITE_ADMIN_API_URL ?? "";
 
-type Tab = "texts" | "submissions" | "info";
+type Tab = "submissions" | "info";
 
 type Submission = {
   id: string;
@@ -200,7 +197,6 @@ function InfoTab({ token }: { token: string }) {
 
   const links = [
     { label: "Открыть сайт", href: "https://triogroups.uz", icon: <ExternalLink className="w-4 h-4" /> },
-    { label: "Telegram", href: "https://t.me/", icon: <ExternalLink className="w-4 h-4" /> },
     { label: "Email", href: "mailto:info@triogroups.uz", icon: <Mail className="w-4 h-4" /> },
   ];
 
@@ -264,19 +260,6 @@ function InfoTab({ token }: { token: string }) {
 export default function AdminPage() {
   const { isVerified, adminEmail, logout, token } = useAdminAuth();
   const [activeTab, setActiveTab] = useState<Tab>("submissions");
-  const [activeLocale, setActiveLocale] = useState<SupportedLocale>("en");
-  const [savedTexts, setSavedTexts] = useState<Record<string, string>>({});
-  const [loadingTexts, setLoadingTexts] = useState(false);
-
-  useEffect(() => {
-    if (!isVerified || activeTab !== "texts") return;
-    setLoadingTexts(true);
-    fetch(`${API_BASE}/api/site-texts/${activeLocale}`)
-      .then((r) => r.json())
-      .then((data: Record<string, string>) => setSavedTexts(data ?? {}))
-      .catch(() => setSavedTexts({}))
-      .finally(() => setLoadingTexts(false));
-  }, [activeLocale, isVerified, activeTab]);
 
   if (isVerified === null) {
     return (
@@ -290,13 +273,11 @@ export default function AdminPage() {
 
   const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
     { id: "submissions", label: "Заявки", icon: <Inbox className="w-4 h-4" /> },
-    { id: "texts", label: "Тексты", icon: <FileText className="w-4 h-4" /> },
     { id: "info", label: "О сайте", icon: <BarChart2 className="w-4 h-4" /> },
   ];
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
@@ -314,8 +295,6 @@ export default function AdminPage() {
             </Button>
           </div>
         </div>
-
-        {/* Tabs */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 flex gap-1 pb-0">
           {tabs.map((tab) => (
             <button
@@ -335,72 +314,7 @@ export default function AdminPage() {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-        {/* SUBMISSIONS TAB */}
         {activeTab === "submissions" && <SubmissionsTab token={token ?? ""} />}
-
-        {/* TEXTS TAB */}
-        {activeTab === "texts" && (
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 flex-wrap">
-              <Globe className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Язык редактирования:</span>
-              {Object.values(SUPPORTED_LOCALES).map((loc) => (
-                <button
-                  key={loc.code}
-                  onClick={() => setActiveLocale(loc.code as SupportedLocale)}
-                  className={`px-3 py-1 rounded-md text-sm font-medium cursor-pointer transition-colors ${
-                    activeLocale === loc.code
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                  }`}
-                >
-                  {loc.emoji} {loc.nativeName}
-                </button>
-              ))}
-            </div>
-
-            <p className="text-sm text-muted-foreground bg-muted/40 rounded-lg px-4 py-3">
-              Редактируете тексты для языка: <strong>{SUPPORTED_LOCALES[activeLocale].nativeName}</strong>.
-              Изменения сохраняются мгновенно и отображаются на сайте сразу.
-            </p>
-
-            {loadingTexts ? (
-              <div className="space-y-4">
-                {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-20 w-full" />)}
-              </div>
-            ) : (
-              <div className="space-y-8">
-                {TEXT_GROUPS.map((group) => (
-                  <div key={group.title} className="space-y-4">
-                    <h2 className="text-base font-semibold border-b pb-2">{group.title}</h2>
-                    <div className="space-y-3">
-                      {group.keys.map((key) => (
-                        <TextField
-                          key={key}
-                          fieldKey={key}
-                          locale={activeLocale}
-                          savedValue={savedTexts[key] ?? ""}
-                          defaultValue={DEFAULT_TEXTS[key] ?? ""}
-                          token={token ?? ""}
-                          onSaved={(value) => {
-                            setSavedTexts((prev) => {
-                              const next = { ...prev };
-                              if (value === "") delete next[key];
-                              else next[key] = value;
-                              return next;
-                            });
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* INFO TAB */}
         {activeTab === "info" && <InfoTab token={token ?? ""} />}
       </main>
     </div>

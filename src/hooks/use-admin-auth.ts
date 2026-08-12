@@ -3,6 +3,15 @@ import { useState, useEffect, useCallback, useRef } from "react";
 const TOKEN_KEY = "admin_token";
 const API_BASE = import.meta.env.VITE_ADMIN_API_URL ?? "";
 
+// Custom event dispatched when admin auth state changes (same tab)
+const AUTH_CHANGE_EVENT = "admin-auth-change";
+
+export function dispatchAdminAuthChange() {
+  window.dispatchEvent(new Event(AUTH_CHANGE_EVENT));
+}
+
+export { AUTH_CHANGE_EVENT };
+
 export function useAdminAuth() {
   const [token, setToken] = useState<string | null>(() =>
     localStorage.getItem(TOKEN_KEY)
@@ -29,7 +38,8 @@ export function useAdminAuth() {
         }
       }
     } catch {
-      // Network error — keep existing state, don't log out
+      // Network error — token exists, assume still valid to avoid infinite loading
+      setIsVerified(true);
       return;
     }
     // Token invalid — clear
@@ -37,6 +47,7 @@ export function useAdminAuth() {
     setToken(null);
     setIsVerified(false);
     setAdminEmail(null);
+    dispatchAdminAuthChange();
   }, []);
 
   // Only verify on mount (when token exists from localStorage)
@@ -46,7 +57,7 @@ export function useAdminAuth() {
       return;
     }
     if (token) {
-      verify(token);
+      void verify(token);
     }
   }, [token, verify]);
 
@@ -59,7 +70,7 @@ export function useAdminAuth() {
 
     if (!res.ok) {
       const data = (await res.json()) as { error?: string };
-      throw new Error(data.error ?? "\u041e\u0448\u0438\u0431\u043a\u0430 \u0432\u0445\u043e\u0434\u0430");
+      throw new Error(data.error ?? "Ошибка входа");
     }
 
     const data = (await res.json()) as { token: string };
@@ -68,6 +79,7 @@ export function useAdminAuth() {
     justLoggedIn.current = true;
     setToken(data.token);
     setIsVerified(true);
+    dispatchAdminAuthChange();
   };
 
   const logout = () => {
@@ -75,6 +87,7 @@ export function useAdminAuth() {
     setToken(null);
     setIsVerified(false);
     setAdminEmail(null);
+    dispatchAdminAuthChange();
   };
 
   return { isVerified, adminEmail, login, logout, token };

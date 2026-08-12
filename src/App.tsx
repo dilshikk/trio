@@ -11,7 +11,10 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/:locale" element={<Index />} />
+          {/* Admin — accessible both with and without locale prefix */}
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/:locale/admin" element={<AdminPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

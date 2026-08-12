@@ -10,13 +10,14 @@ export default function App() {
     <DefaultProviders>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/:locale" element={<Index />} />
-          {/* Admin — accessible both with and without locale prefix */}
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          {/* Admin */}
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/:locale/admin" element={<AdminPage />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Main site — root and all locales */}
+          <Route path="/" element={<Index />} />
+          <Route path="/:locale" element={<Index />} />
+          <Route path="/:locale/*" element={<Index />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

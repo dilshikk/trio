@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import Navigation from "@/components/navigation.tsx";
 import Preloader from "@/components/preloader.tsx";
@@ -12,6 +13,7 @@ import FinalCta from "./home/_components/final-cta.tsx";
 import Footer from "./home/_components/footer.tsx";
 import { EditModeProvider } from "@/components/edit-mode-provider.tsx";
 import AdminBar from "@/components/admin-bar.tsx";
+import { changeLocale, isSupportedLocale } from "@/i18n";
 
 function SectionReveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -27,7 +29,16 @@ function SectionReveal({ children, delay = 0 }: { children: React.ReactNode; del
 }
 
 export default function Index() {
+  const { locale } = useParams<{ locale?: string }>();
   const [preloaderDone, setPreloaderDone] = useState(false);
+
+  // Sync i18n language with URL locale param
+  useEffect(() => {
+    if (locale && isSupportedLocale(locale)) {
+      void changeLocale(locale);
+    }
+  }, [locale]);
+
   return (
     <EditModeProvider>
       <AnimatePresence>

@@ -19,9 +19,22 @@ export const updateCurrentUser = mutation({
         q.eq("tokenIdentifier", identity.tokenIdentifier),
       )
       .unique();
+
     if (user !== null) {
+      // Update name/email in case they changed in Hercules Auth
+      const updates: { name?: string; email?: string } = {};
+      if (identity.name !== undefined && identity.name !== user.name) {
+        updates.name = identity.name;
+      }
+      if (identity.email !== undefined && identity.email !== user.email) {
+        updates.email = identity.email;
+      }
+      if (Object.keys(updates).length > 0) {
+        await ctx.db.patch(user._id, updates);
+      }
       return user._id;
     }
+
     // If it's a new identity, create a new User.
     return await ctx.db.insert("users", {
       name: identity.name,

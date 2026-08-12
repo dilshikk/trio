@@ -15,15 +15,20 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       orientation: "vertical",
       smoothWheel: true,
     });
+
+    let rafId: number;
     const raf = (time: number) => {
       lenisInstance?.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     };
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
+
     return () => {
+      cancelAnimationFrame(rafId);
       lenisInstance?.destroy();
       lenisInstance = null;
     };
   }, []);
+
   return <>{children}</>;
 }

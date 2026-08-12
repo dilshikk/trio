@@ -9,7 +9,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules/
- 
 
 # Dependencies and build artifacts
 node_modules
@@ -30,6 +29,17 @@ tsconfig.tsbuildinfo
 *.sln
 *.sw?
 
-# Environment variables
-.env*
+# Environment variables — ignore real env files
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
 server/.env
+server/submissions.json
+server/site-texts.json
+
+# Allow example files to be committed
+!.env.example
+!.env.production.example
+!server/.env.example

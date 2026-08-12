@@ -1,6 +1,7 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
+// Minimal schema — Convex is kept only for potential future use
 export default defineSchema({
   users: defineTable({
     tokenIdentifier: v.string(),

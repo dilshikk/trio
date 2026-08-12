@@ -10,7 +10,7 @@ import ProcessSection from "./home/_components/process-section.tsx";
 import GlobalSection from "./home/_components/global-section.tsx";
 import FinalCta from "./home/_components/final-cta.tsx";
 import Footer from "./home/_components/footer.tsx";
-import { EditModeProvider } from "@/hooks/use-edit-mode.ts";
+import { EditModeProvider } from "@/components/edit-mode-provider.tsx";
 import AdminBar from "@/components/admin-bar.tsx";
 
 function SectionReveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {

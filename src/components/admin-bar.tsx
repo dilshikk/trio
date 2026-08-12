@@ -2,13 +2,8 @@ import { useEditMode } from "@/hooks/use-edit-mode.ts";
 import { Pencil, PencilOff, LayoutDashboard, LogOut } from "lucide-react";
 
 export default function AdminBar() {
-  const { isAdmin, isEditMode, toggleEditMode } = useEditMode();
+  const { isAdmin, isEditMode, toggleEditMode, logout } = useEditMode();
   if (!isAdmin) return null;
-
-  const handleLogout = () => {
-    localStorage.removeItem("admin_token");
-    window.location.reload();
-  };
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-1 bg-black/90 border border-white/15 backdrop-blur-lg rounded-full px-3 py-2 shadow-2xl select-none">
@@ -22,7 +17,7 @@ export default function AdminBar() {
         }`}
       >
         {isEditMode ? <Pencil className="w-3 h-3" /> : <PencilOff className="w-3 h-3" />}
-        {isEditMode ? "\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435: \u0412\u041a\u041b" : "\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c"}
+        {isEditMode ? "Редактирование: ВКЛ" : "Редактировать"}
       </button>
       <a
         href="/admin"
@@ -31,12 +26,12 @@ export default function AdminBar() {
         className="flex items-center gap-1.5 text-[11px] text-white/50 hover:text-white px-3 py-1.5 rounded-full hover:bg-white/10 transition-all duration-200 cursor-pointer"
       >
         <LayoutDashboard className="w-3 h-3" />
-        \u041f\u0430\u043d\u0435\u043b\u044c
+        Панель
       </a>
       <button
-        onClick={handleLogout}
+        onClick={logout}
         className="flex items-center text-[11px] text-white/30 hover:text-red-400 px-2 py-1.5 rounded-full hover:bg-white/10 transition-all duration-200 cursor-pointer"
-        title="\u0412\u044b\u0439\u0442\u0438"
+        title="Выйти"
       >
         <LogOut className="w-3 h-3" />
       </button>

@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import { useMutation } from "convex/react";
-import { ConvexError } from "convex/values";
 import { toast } from "sonner";
 import { Check, RotateCcw } from "lucide-react";
-import { api } from "@/convex/_generated/api.js";
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -11,11 +8,14 @@ import { Label } from "@/components/ui/label.tsx";
 import { Spinner } from "@/components/ui/spinner.tsx";
 import { fieldLabel } from "../_lib/text-groups.ts";
 
+const API_BASE = import.meta.env.VITE_ADMIN_API_URL ?? "";
+
 type TextFieldProps = {
   locale: string;
   textKey: string;
   defaultValue: string;
   savedValue: string | undefined;
+  token: string;
 };
 
 export default function TextField({
@@ -23,13 +23,12 @@ export default function TextField({
   textKey,
   defaultValue,
   savedValue,
+  token,
 }: TextFieldProps) {
   const currentValue = savedValue ?? defaultValue;
   const [draft, setDraft] = useState(currentValue);
   const [isSaving, setIsSaving] = useState(false);
-  const setText = useMutation(api.siteTexts.setText);
 
-  // Keep the field in sync when the language changes or another admin saves.
   useEffect(() => {
     setDraft(currentValue);
   }, [currentValue, locale]);
@@ -41,14 +40,21 @@ export default function TextField({
   const save = async (value: string) => {
     setIsSaving(true);
     try {
-      await setText({ locale, key: textKey, value });
+      const res = await fetch(`${API_BASE}/api/site-texts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ locale, key: textKey, value }),
+      });
+      if (!res.ok) {
+        const data = (await res.json()) as { error?: string };
+        throw new Error(data.error ?? "Не удалось сохранить текст");
+      }
       toast.success("Сохранено");
     } catch (error) {
-      const message =
-        error instanceof ConvexError
-          ? (error.data as { message: string }).message
-          : "Не удалось сохранить текст";
-      toast.error(message);
+      toast.error(error instanceof Error ? error.message : "Не удалось сохранить текст");
       setDraft(currentValue);
     } finally {
       setIsSaving(false);

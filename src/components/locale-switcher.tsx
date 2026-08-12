@@ -1,4 +1,5 @@
 import {
+  changeLocale,
   setLocaleInPath,
   SUPPORTED_LOCALES,
   SUPPORTED_LOCALES_ARRAY,
@@ -19,7 +20,8 @@ export default function LocaleSwitcher() {
   const currentMeta = SUPPORTED_LOCALES[i18n.language as keyof typeof SUPPORTED_LOCALES]
     ?? SUPPORTED_LOCALES.en;
 
-  const handleChangeLocale = (newLng: SupportedLocale) => {
+  const handleChangeLocale = async (newLng: SupportedLocale) => {
+    await changeLocale(newLng);
     const newPath = setLocaleInPath(newLng, location.pathname, location.search, location.hash);
     navigate(newPath);
     setOpen(false);
@@ -69,7 +71,7 @@ export default function LocaleSwitcher() {
               return (
                 <button
                   key={lng}
-                  onClick={() => handleChangeLocale(lng)}
+                  onClick={() => { void handleChangeLocale(lng); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors duration-200 ${
                     isActive
                       ? "text-white bg-white/5"

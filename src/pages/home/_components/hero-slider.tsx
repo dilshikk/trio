@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import LogisticsScene from "./scenes/logistics-scene.tsx";
 import AccountingScene from "./scenes/accounting-scene.tsx";
 import ConsultingScene from "./scenes/consulting-scene.tsx";
+import EditableText from "@/components/editable-text.tsx";
 
 type SlideIndex = 0 | 1 | 2;
 
@@ -16,6 +17,7 @@ const SLIDE_ACCENTS = [
 
 export default function HeroSlider() {
   const { t } = useTranslation("common");
+  void t;
   const [activeSlide, setActiveSlide] = useState<SlideIndex>(0);
   const [prevSlide, setPrevSlide] = useState<SlideIndex | null>(null);
   const [transitioning, setTransitioning] = useState(false);
@@ -74,19 +76,27 @@ export default function HeroSlider() {
         <AnimatePresence mode="wait">
           <motion.div key={`content-${activeSlide}`} className="max-w-[1400px] w-full">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] as const }} className="flex items-center gap-3 mb-6">
-              <span className="text-[11px] font-semibold tracking-[0.3em] uppercase" style={{ color: current.accent }}>{t(`hero.slide${slideNum}.label`)}</span>
+              <span className="text-[11px] font-semibold tracking-[0.3em] uppercase" style={{ color: current.accent }}>
+                <EditableText tKey={`hero.slide${slideNum}.label`} />
+              </span>
               <div className="h-[1px] w-12 bg-white/20" />
-              <span className="text-[11px] tracking-[0.2em] text-white/30 uppercase">{t(`hero.slide${slideNum}.headline`)}</span>
+              <span className="text-[11px] tracking-[0.2em] text-white/30 uppercase">
+                <EditableText tKey={`hero.slide${slideNum}.headline`} />
+              </span>
             </motion.div>
             <div className="overflow-hidden">
-              <motion.h1 initial={{ y: 120, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -80, opacity: 0 }} transition={{ duration: 1.0, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }} className="text-[clamp(48px,8vw,130px)] font-bold leading-[0.92] tracking-[-0.03em] text-white mb-6 whitespace-pre-line">{t(`hero.slide${slideNum}.subheadline`)}</motion.h1>
+              <motion.h1 initial={{ y: 120, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -80, opacity: 0 }} transition={{ duration: 1.0, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }} className="text-[clamp(48px,8vw,130px)] font-bold leading-[0.92] tracking-[-0.03em] text-white mb-6 whitespace-pre-line">
+                <EditableText tKey={`hero.slide${slideNum}.subheadline`} multiline />
+              </motion.h1>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-end gap-6 sm:gap-16 mt-8">
-              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 0.55, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.8, delay: 0.45, ease: [0.25, 0.1, 0.25, 1] as const }} className="text-[14px] leading-relaxed max-w-xs font-light text-white">{t(`hero.slide${slideNum}.description`)}</motion.p>
+              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 0.55, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.8, delay: 0.45, ease: [0.25, 0.1, 0.25, 1] as const }} className="text-[14px] leading-relaxed max-w-xs font-light text-white">
+                <EditableText tKey={`hero.slide${slideNum}.description`} />
+              </motion.p>
               <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={{ duration: 0.8, delay: 0.55, ease: [0.25, 0.1, 0.25, 1] as const }}>
                 <a href={current.href} onClick={(e) => { e.preventDefault(); document.querySelector(current.href)?.scrollIntoView({ behavior: "smooth" }); }} className="group flex items-center gap-3 text-[11px] font-semibold tracking-[0.25em] uppercase text-white/80 hover:text-white transition-colors duration-300" data-cursor="EXPLORE">
                   <span className="w-8 h-[1px] group-hover:w-14 transition-all duration-500 ease-out" style={{ background: current.accent }} />
-                  {t(`hero.slide${slideNum}.cta`)}
+                  <EditableText tKey={`hero.slide${slideNum}.cta`} />
                   <svg width="10" height="10" viewBox="0 0 10 10" className="group-hover:translate-x-1 transition-transform duration-300"><path d="M1 9L9 1M9 1H3M9 1V7" stroke="currentColor" strokeWidth="1.2" fill="none" /></svg>
                 </a>
               </motion.div>

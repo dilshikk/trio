@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useTranslation } from "react-i18next";
+import EditableText from "@/components/editable-text.tsx";
 
 const services = [
   { number: "01", tKey: "1", accent: "oklch(0.65 0.2 240)", accentHex: "#6395ff", id: "logistics" },
@@ -33,16 +34,20 @@ function ServiceItem({ service, index }: { service: typeof services[0]; index: n
         <div className="flex items-center gap-3">
           <span className="text-[10px] font-semibold tracking-[0.3em] uppercase" style={{ color: service.accent }}>{service.number}</span>
           <div className="h-[1px] w-8 bg-white/20" />
-          <span className="text-[10px] tracking-[0.2em] text-white/30 uppercase">{t(`services.${service.tKey}.label`)}</span>
+          <span className="text-[10px] tracking-[0.2em] text-white/30 uppercase"><EditableText tKey={`services.${service.tKey}.label`} /></span>
         </div>
-        <h2 className="text-[clamp(40px,5.5vw,80px)] font-bold leading-[0.9] tracking-[-0.03em] text-white whitespace-pre-line">{t(`services.${service.tKey}.headline`)}</h2>
-        <p className="text-[15px] leading-relaxed text-white/50 font-light max-w-sm">{t(`services.${service.tKey}.description`)}</p>
+        <h2 className="text-[clamp(40px,5.5vw,80px)] font-bold leading-[0.9] tracking-[-0.03em] text-white whitespace-pre-line">
+          <EditableText tKey={`services.${service.tKey}.headline`} multiline />
+        </h2>
+        <p className="text-[15px] leading-relaxed text-white/50 font-light max-w-sm">
+          <EditableText tKey={`services.${service.tKey}.description`} />
+        </p>
         <div className="flex flex-wrap gap-2">
           {pillars.map((p) => (<span key={p} className="text-[9px] tracking-[0.18em] uppercase px-3 py-1.5 border" style={{ color: `${service.accentHex}90`, borderColor: `${service.accentHex}25` }}>{p.trim()}</span>))}
         </div>
         <a href={`#${service.id}-detail`} onClick={(e) => { e.preventDefault(); document.querySelector(`#${service.id}-detail`)?.scrollIntoView({ behavior: "smooth" }); }} data-cursor="EXPLORE" className="group inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.25em] uppercase text-white/60 hover:text-white transition-colors duration-300">
           <span className="w-6 h-[1px] group-hover:w-12 transition-all duration-500" style={{ background: service.accentHex }} />
-          {t("services.learnMore")}
+          <EditableText tKey="services.learnMore" />
         </a>
       </div>
     </motion.div>
@@ -51,11 +56,15 @@ function ServiceItem({ service, index }: { service: typeof services[0]; index: n
 
 export default function ServicesSection() {
   const { t } = useTranslation("common");
+  void t;
   return (
     <section className="relative px-6 md:px-16 lg:px-24 max-w-[1400px] mx-auto">
       <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] as const }} className="pt-28 pb-4">
-        <p className="text-[10px] tracking-[0.35em] text-white/30 uppercase mb-4">{t("services.eyebrow")}</p>
-        <h2 className="text-[clamp(36px,5vw,68px)] font-bold tracking-[-0.03em] text-white leading-[0.95]">{t("services.title")}<br /><span className="text-white/30">{t("services.titleFaded")}</span></h2>
+        <p className="text-[10px] tracking-[0.35em] text-white/30 uppercase mb-4"><EditableText tKey="services.eyebrow" /></p>
+        <h2 className="text-[clamp(36px,5vw,68px)] font-bold tracking-[-0.03em] text-white leading-[0.95]">
+          <EditableText tKey="services.title" /><br />
+          <span className="text-white/30"><EditableText tKey="services.titleFaded" /></span>
+        </h2>
       </motion.div>
       {services.map((service, i) => (<ServiceItem key={service.id} service={service} index={i} />))}
     </section>

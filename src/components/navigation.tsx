@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
+import EditableText from "@/components/editable-text.tsx";
+import LocaleSwitcher from "@/components/locale-switcher.tsx";
 
 const navLinks = [
   { key: "nav.logistics", href: "#logistics" },
@@ -10,12 +12,11 @@ const navLinks = [
   { key: "nav.contact", href: "#contact" },
 ];
 
-import LocaleSwitcher from "@/components/locale-switcher.tsx";
-
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const { t } = useTranslation("common");
+  void t;
   const bgOpacity = useTransform(scrollY, [0, 120], [0, 1]);
 
   const handleNavClick = (href: string) => {
@@ -56,7 +57,7 @@ export default function Navigation() {
                 onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                 className="text-[11px] font-medium tracking-[0.18em] text-white/50 hover:text-white/90 transition-colors duration-300 uppercase cursor-pointer"
               >
-                {t(link.key)}
+                <EditableText tKey={link.key} />
               </a>
             ))}
           </div>
@@ -66,7 +67,7 @@ export default function Navigation() {
               onClick={() => handleNavClick("#contact")}
               className="text-[11px] font-semibold tracking-[0.2em] uppercase border border-white/20 text-white/80 hover:border-white/60 hover:text-white transition-all duration-300 px-5 py-2.5 rounded-sm cursor-pointer"
             >
-              {t("nav.cta")}
+              <EditableText tKey="nav.cta" />
             </button>
           </div>
           <div className="flex lg:hidden items-center gap-3">
@@ -103,7 +104,7 @@ export default function Navigation() {
                 transition={{ delay: i * 0.06, duration: 0.4 }}
                 className="text-3xl font-light tracking-[0.25em] text-white/70 hover:text-white transition-colors uppercase cursor-pointer"
               >
-                {t(link.key)}
+                <EditableText tKey={link.key} />
               </motion.a>
             ))}
             <motion.button
@@ -113,7 +114,7 @@ export default function Navigation() {
               onClick={() => handleNavClick("#contact")}
               className="mt-4 text-[11px] font-semibold tracking-[0.25em] uppercase border border-white/20 text-white/80 px-8 py-3 cursor-pointer"
             >
-              {t("nav.cta")}
+              <EditableText tKey="nav.cta" />
             </motion.button>
           </motion.div>
         )}

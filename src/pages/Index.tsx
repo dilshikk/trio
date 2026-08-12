@@ -10,6 +10,8 @@ import ProcessSection from "./home/_components/process-section.tsx";
 import GlobalSection from "./home/_components/global-section.tsx";
 import FinalCta from "./home/_components/final-cta.tsx";
 import Footer from "./home/_components/footer.tsx";
+import { EditModeProvider } from "@/hooks/use-edit-mode.ts";
+import AdminBar from "@/components/admin-bar.tsx";
 
 function SectionReveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -27,7 +29,7 @@ function SectionReveal({ children, delay = 0 }: { children: React.ReactNode; del
 export default function Index() {
   const [preloaderDone, setPreloaderDone] = useState(false);
   return (
-    <>
+    <EditModeProvider>
       <AnimatePresence>
         {!preloaderDone && <Preloader key="preloader" onComplete={() => setPreloaderDone(true)} />}
       </AnimatePresence>
@@ -44,20 +46,15 @@ export default function Index() {
             <HeroSlider />
             <ServicesSection />
             <ServiceDetailSection />
-            <SectionReveal>
-              <AboutSection />
-            </SectionReveal>
+            <SectionReveal><AboutSection /></SectionReveal>
             <ProcessSection />
-            <SectionReveal>
-              <GlobalSection />
-            </SectionReveal>
-            <SectionReveal>
-              <FinalCta />
-            </SectionReveal>
+            <SectionReveal><GlobalSection /></SectionReveal>
+            <SectionReveal><FinalCta /></SectionReveal>
             <Footer />
           </motion.main>
         )}
       </AnimatePresence>
-    </>
+      <AdminBar />
+    </EditModeProvider>
   );
 }

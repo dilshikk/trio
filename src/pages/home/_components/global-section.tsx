@@ -35,7 +35,26 @@ export default function GlobalSection() {
             {Array.from({ length: 5 }).map((_, i) => (<line key={`h${i}`} x1="0" y1={i * 14} x2="100" y2={i * 14} stroke="white" strokeWidth="0.08" strokeOpacity="0.1" />))}
             {Array.from({ length: 8 }).map((_, i) => (<line key={`v${i}`} x1={i * 15} y1="0" x2={i * 15} y2="55" stroke="white" strokeWidth="0.08" strokeOpacity="0.1" />))}
             {routes.map(([a, b], i) => { const na = nodes[a]; const nb = nodes[b]; return (<motion.line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y} stroke="#6395ff" strokeWidth="0.2" strokeOpacity="0" animate={{ strokeOpacity: [0, 0.35, 0] }} transition={{ duration: 3 + i * 0.5, delay: i * 0.3, repeat: Infinity, ease: "easeInOut" as const }} />); })}
-            {nodes.map((node, i) => (<g key={i}><motion.circle cx={node.x} cy={node.y} r={node.size * 0.5} fill="none" stroke="#6395ff" strokeWidth="0.15" animate={{ r: [node.size * 0.5, node.size * 1.2], opacity: [0.4, 0] }} transition={{ duration: 2.5, delay: i * 0.4, repeat: Infinity, ease: "easeOut" as const }} /><circle cx={node.x} cy={node.y} r={node.size * 0.25} fill="#6395ff" fillOpacity="0.7" /><text x={node.x} y={node.y - node.size * 0.5 - 0.5} textAnchor="middle" fontSize="1.2" fill="white" fillOpacity="0.3" fontFamily="Geist, sans-serif" fontWeight="600" letterSpacing="0.3">{node.label}</text></g>))}
+            {nodes.map((node, i) => (
+              <g key={i}>
+                <motion.circle
+                  cx={node.x} cy={node.y}
+                  r={node.size * 0.5}
+                  fill="none" stroke="#6395ff" strokeWidth="0.15"
+                  animate={{ r: [node.size * 0.5, node.size * 1.2], opacity: [0.4, 0] }}
+                  transition={{ duration: 2.5, delay: i * 0.4, repeat: Infinity, ease: "easeOut" as const }}
+                />
+                <circle cx={node.x} cy={node.y} r={node.size * 0.25} fill="#6395ff" fillOpacity="0.7" />
+                <text
+                  x={node.x} y={node.y - node.size * 0.5 - 0.5}
+                  textAnchor="middle" fontSize="1.2"
+                  fill="white" fillOpacity="0.3"
+                  fontFamily="Geist, sans-serif" fontWeight="600" letterSpacing="0.3"
+                >
+                  {node.label}
+                </text>
+              </g>
+            ))}
           </svg>
         </div>
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-px border border-white/8 bg-white/8">

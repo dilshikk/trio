@@ -148,7 +148,7 @@ function InfoTab({ token }: { token: string }) {
       <div>
         <h2 className="text-lg font-semibold mb-4">О сайте</h2>
         <div className="rounded-xl border bg-card divide-y divide-border overflow-hidden">
-          {[["Домен", "triogroup.uz"], ["Языки", "EN · RU · UZ · OZ"], ["Технологии", "React · Vite · Node.js"], ["Компания", "TRIO GROUP"]].map(([k, v]) => (
+          {[["Домен", "triogroups.uz"], ["Языки", "EN · RU · OZ"], ["Технологии", "React · Vite · Node.js"], ["Компания", "TRIO GROUPS"]].map(([k, v]) => (
             <div key={k} className="flex items-center justify-between px-5 py-3">
               <span className="text-sm text-muted-foreground">{k}</span>
               <span className="text-sm font-medium">{v}</span>
@@ -159,8 +159,8 @@ function InfoTab({ token }: { token: string }) {
       <div>
         <h2 className="text-lg font-semibold mb-4">Быстрые ссылки</h2>
         <div className="flex flex-wrap gap-3">
-          <a href="https://triogroup.uz" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm border rounded-lg px-4 py-2 hover:bg-muted transition-colors"><ExternalLink className="w-4 h-4" /> Открыть сайт</a>
-          <a href="mailto:info@triogroup.uz" className="inline-flex items-center gap-2 text-sm border rounded-lg px-4 py-2 hover:bg-muted transition-colors"><Mail className="w-4 h-4" /> Email</a>
+          <a href="https://triogroups.uz" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm border rounded-lg px-4 py-2 hover:bg-muted transition-colors"><ExternalLink className="w-4 h-4" /> Открыть сайт</a>
+          <a href="mailto:info@triogroups.uz" className="inline-flex items-center gap-2 text-sm border rounded-lg px-4 py-2 hover:bg-muted transition-colors"><Mail className="w-4 h-4" /> Email</a>
         </div>
       </div>
     </div>
@@ -191,11 +191,11 @@ export default function AdminPage() {
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <img src="https://hercules-cdn.com/file_exMhy8nexpXEXJmG0mlYSQKH" alt="logo" className="h-6 w-6" />
-            <span className="font-semibold text-sm tracking-wider uppercase">TRIO GROUP — Admin</span>
+            <img src="https://hercules-cdn.com/file_GFvPTJks4UL7mjCYDOlE3qFm" alt="logo" className="h-6 w-6" />
+            <span className="font-semibold text-sm tracking-wider uppercase">TRIO GROUPS — Admin</span>
           </div>
           <div className="flex items-center gap-2">
-            <a href="https://triogroup.uz" target="_blank" rel="noopener noreferrer" className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"><ExternalLink className="w-3.5 h-3.5" /> Открыть сайт</a>
+            <a href="https://triogroups.uz" target="_blank" rel="noopener noreferrer" className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"><ExternalLink className="w-3.5 h-3.5" /> Открыть сайт</a>
             <span className="hidden sm:block text-xs text-muted-foreground border-l pl-3 ml-1">{adminEmail}</span>
             <Button variant="ghost" size="sm" onClick={logout} className="gap-1.5 text-xs"><LogOut className="w-3.5 h-3.5" /> Выйти</Button>
           </div>

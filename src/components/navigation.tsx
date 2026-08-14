@@ -42,7 +42,7 @@ export default function Navigation() {
             className="flex items-center gap-3 group cursor-pointer"
           >
             <img
-              src="https://hercules-cdn.com/file_GFvPTJks4UL7mjCYDOlE3qFm"
+              src="/images/logo.png"
               alt="TRIO GROUPS"
               className="h-8 w-8 object-contain select-none flex-shrink-0 transition-all duration-500 group-hover:drop-shadow-[0_0_10px_rgba(99,149,255,0.5)]"
               draggable={false}

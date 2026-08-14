@@ -44,7 +44,7 @@ export default function Footer() {
           {/* Brand + tagline */}
           <div className="shrink-0">
             <div className="flex items-center gap-3 mb-4">
-              <img src="https://hercules-cdn.com/file_GFvPTJks4UL7mjCYDOlE3qFm" alt="TRIO GROUPS" className="h-6 w-6 object-contain" />
+              <img src="/images/logo.png" alt="TRIO GROUPS" className="h-6 w-6 object-contain" />
               <span className="text-[13px] font-semibold tracking-[0.2em] text-white/70 uppercase">TRIO GROUPS</span>
             </div>
             <p className="text-[12px] text-white/30 font-light max-w-[220px] leading-relaxed mb-6">
@@ -98,8 +98,6 @@ export default function Footer() {
 
           {/* Contacts block */}
           <div className="flex flex-col gap-8 shrink-0">
-
-            {/* Logistics phones */}
             <div>
               <p className="text-[9px] tracking-[0.3em] text-white/25 uppercase mb-4 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#6395ff]/70 inline-block" />
@@ -108,15 +106,11 @@ export default function Footer() {
               <ul className="space-y-2">
                 {CONTACTS.logistics.map((c) => (
                   <li key={c.href}>
-                    <a href={c.href} className="text-[13px] text-white/55 hover:text-white/90 transition-colors duration-300 font-light tracking-wide">
-                      {c.label}
-                    </a>
+                    <a href={c.href} className="text-[13px] text-white/55 hover:text-white/90 transition-colors duration-300 font-light tracking-wide">{c.label}</a>
                   </li>
                 ))}
               </ul>
             </div>
-
-            {/* Accounting phones */}
             <div>
               <p className="text-[9px] tracking-[0.3em] text-white/25 uppercase mb-4 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#dcb25a]/70 inline-block" />
@@ -125,27 +119,15 @@ export default function Footer() {
               <ul className="space-y-2">
                 {CONTACTS.accounting.map((c) => (
                   <li key={c.href}>
-                    <a href={c.href} className="text-[13px] text-white/55 hover:text-white/90 transition-colors duration-300 font-light tracking-wide">
-                      {c.label}
-                    </a>
+                    <a href={c.href} className="text-[13px] text-white/55 hover:text-white/90 transition-colors duration-300 font-light tracking-wide">{c.label}</a>
                   </li>
                 ))}
               </ul>
             </div>
-
-            {/* Telegram */}
             <div>
               <p className="text-[9px] tracking-[0.3em] text-white/25 uppercase mb-4">Telegram</p>
-              <a
-                href={CONTACTS.telegram.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[13px] text-white/55 hover:text-white/90 transition-colors duration-300 font-light"
-              >
-                {CONTACTS.telegram.label}
-              </a>
+              <a href={CONTACTS.telegram.href} target="_blank" rel="noopener noreferrer" className="text-[13px] text-white/55 hover:text-white/90 transition-colors duration-300 font-light">{CONTACTS.telegram.label}</a>
             </div>
-
           </div>
         </div>
 

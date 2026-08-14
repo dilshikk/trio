@@ -41,11 +41,11 @@ export default function Navigation() {
           >
             <img
               src="/images/logo.png"
-              alt="TRIO GROUP"
+              alt="TRIO GROUPS"
               className="h-8 w-8 object-contain select-none flex-shrink-0 transition-all duration-500 group-hover:drop-shadow-[0_0_10px_rgba(99,149,255,0.5)]"
               draggable={false}
             />
-            <span className="text-[13px] font-semibold tracking-[0.2em] text-white uppercase">TRIO GROUP</span>
+            <span className="text-[13px] font-semibold tracking-[0.2em] text-white uppercase">TRIO GROUPS</span>
           </Link>
 
           {/* Desktop nav */}

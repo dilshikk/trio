@@ -3,12 +3,14 @@ import { useTranslation } from "react-i18next";
 import EditableText from "@/components/editable-text.tsx";
 
 const nodes = [
-  { x: 50, y: 30, label: "EUROPE", size: 6 }, { x: 22, y: 38, label: "AMERICAS", size: 5 },
-  { x: 72, y: 42, label: "ASIA PAC", size: 6 }, { x: 48, y: 58, label: "AFRICA", size: 4 },
-  { x: 60, y: 25, label: "RUSSIA", size: 3 }, { x: 35, y: 50, label: "S. AMERICA", size: 4 },
-  { x: 82, y: 55, label: "OCEANIA", size: 3 }, { x: 55, y: 35, label: "MIDDLE EAST", size: 3 },
+  { x: 60, y: 40, label: "UZBEKISTAN", size: 7 },
+  { x: 79, y: 32, label: "CHINA", size: 5 },
+  { x: 57, y: 20, label: "RUSSIA", size: 4 },
+  { x: 40, y: 26, label: "EUROPE", size: 5 },
+  { x: 66, y: 28, label: "CIS", size: 4 },
+  { x: 55, y: 52, label: "MIDDLE EAST", size: 3 },
 ];
-const routes = [[0,1],[0,2],[0,7],[2,3],[2,6],[1,5],[0,4],[7,2]];
+const routes = [[0,1],[0,2],[0,3],[0,4],[0,5],[2,4],[3,4]];
 
 const STAT_KEYS = [
   { labelKey: "global.stat1.label", subKey: "global.stat1.sub" },

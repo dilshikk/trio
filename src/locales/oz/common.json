@@ -2,7 +2,7 @@
   "nav.logistics": "LOGISTIKA",
   "nav.accounting": "BUXGALTERIYA",
   "nav.consulting": "KONSALTING",
-  "nav.about": "GURUH HAQIDA",
+  "nav.about": "KOMPANIYA HAQIDA",
   "nav.contact": "ALOQA",
   "nav.cta": "VAZIFANI MUHOKAMA QILISH",
 
@@ -157,7 +157,7 @@
   "footer.services": "Xizmatlar",
   "footer.company": "Kompaniya",
   "footer.contacts": "Aloqalar",
-  "footer.about": "Guruh haqida",
+  "footer.about": "Kompaniya haqida",
   "footer.contact": "Aloqa",
   "footer.privacy": "Maxfiylik",
   "footer.terms": "Shartlar",

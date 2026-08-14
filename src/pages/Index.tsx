@@ -10,6 +10,7 @@ import AboutSection from "./home/_components/about-section.tsx";
 import ProcessSection from "./home/_components/process-section.tsx";
 import GlobalSection from "./home/_components/global-section.tsx";
 import FinalCta from "./home/_components/final-cta.tsx";
+import MapSection from "./_components/MapSection.tsx";
 import Footer from "./home/_components/footer.tsx";
 import { EditModeProvider } from "@/components/edit-mode-provider.tsx";
 import AdminBar from "@/components/admin-bar.tsx";
@@ -61,6 +62,7 @@ export default function Index() {
             <ProcessSection />
             <SectionReveal><GlobalSection /></SectionReveal>
             <SectionReveal><FinalCta /></SectionReveal>
+            <SectionReveal><MapSection /></SectionReveal>
             <Footer />
           </motion.main>
         )}

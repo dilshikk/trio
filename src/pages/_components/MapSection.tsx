@@ -100,35 +100,6 @@ export default function MapSection() {
           referrerPolicy="no-referrer-when-downgrade"
         />
       </motion.div>
-
-      {/* Bottom info row */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="max-w-[1400px] mx-auto mt-6 flex flex-wrap items-center gap-6 md:gap-12"
-      >
-        <div className="flex items-center gap-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#6395ff]/70" />
-          <span className="text-[12px] text-white/35">+998 94 062 24 42</span>
-          <span className="text-[12px] text-white/20">·</span>
-          <span className="text-[12px] text-white/35">+998 97 904 33 33</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#dcb25a]/70" />
-          <span className="text-[12px] text-white/35">+998 94 056 66 56</span>
-          <span className="text-[12px] text-white/20">·</span>
-          <span className="text-[12px] text-white/35">+998 93 538 66 79</span>
-        </div>
-        <a
-          href="https://t.me/TrioGroupsuz"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[12px] text-white/35 hover:text-white/70 transition-colors"
-        >
-          @TrioGroupsuz
-        </a>
-      </motion.div>
     </section>
   );
 }

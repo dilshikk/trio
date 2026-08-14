@@ -4,11 +4,10 @@ import { useTranslation } from "react-i18next";
 
 const ADDRESS = "просп. Мустакиллик, 24, Ташкент";
 const MAP_URL =
-  "https://yandex.ru/maps?text=41.315843,69.292294&si=981f5g03pp162cvrkw79eq8kdw";
-// pt= параметр убран — встроенная метка двигалась вместе с картой.
-// Вместо неё используется статичный HTML-бейдж поверх iframe.
+  "https://yandex.uz/maps/10335/tashkent/?ll=69.292294%2C41.315843&pt=69.292294%2C41.315843&z=16";
+// pt= нужен для центровки — без него карта смещается. HTML-бейдж сверху статичен.
 const EMBED_URL =
-  "https://yandex.ru/map-widget/v1/?ll=69.292294%2C41.315843&z=15&lang=ru_RU&theme=dark&scroll=false";
+  "https://yandex.uz/map-widget/v1/?ll=69.292294%2C41.315843&z=16&pt=69.292294%2C41.315843&lang=ru_RU&theme=dark&scroll=false";
 
 export default function MapSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -76,7 +75,7 @@ export default function MapSection() {
           referrerPolicy="no-referrer-when-downgrade"
         />
 
-        {/* Decorative vignette overlay — поверх карты, ниже пина */}
+        {/* Vignette overlay */}
         <div
           className="absolute inset-0 z-10 pointer-events-none"
           style={{
@@ -87,10 +86,7 @@ export default function MapSection() {
         <div className="absolute top-0 left-0 right-0 h-16 z-10 pointer-events-none" style={{ background: "linear-gradient(to bottom, oklch(0.08 0 0), transparent)" }} />
         <div className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to top, oklch(0.08 0 0), transparent)" }} />
 
-        {/*
-          Статичный пин — позиционирован через CSS относительно контейнера,
-          не связан с координатами карты, не двигается при панорамировании.
-        */}
+        {/* Статичный HTML-бейдж поверх карты */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+18px)] z-20 pointer-events-none flex flex-col items-center gap-1">
           <motion.div
             initial={{ scale: 0, opacity: 0 }}

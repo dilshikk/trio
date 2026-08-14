@@ -44,8 +44,8 @@ export default function Footer() {
           {/* Brand + tagline */}
           <div className="shrink-0">
             <div className="flex items-center gap-3 mb-4">
-              <img src="https://hercules-cdn.com/file_exMhy8nexpXEXJmG0mlYSQKH" alt="TRIO GROUP" className="h-6 w-6 object-contain" />
-              <span className="text-[13px] font-semibold tracking-[0.2em] text-white/70 uppercase">TRIO GROUP</span>
+              <img src="https://hercules-cdn.com/file_GFvPTJks4UL7mjCYDOlE3qFm" alt="TRIO GROUPS" className="h-6 w-6 object-contain" />
+              <span className="text-[13px] font-semibold tracking-[0.2em] text-white/70 uppercase">TRIO GROUPS</span>
             </div>
             <p className="text-[12px] text-white/30 font-light max-w-[220px] leading-relaxed mb-6">
               <EditableText tKey="footer.tagline" />

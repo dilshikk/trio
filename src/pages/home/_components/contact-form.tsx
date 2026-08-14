@@ -4,14 +4,14 @@ import { useTranslation } from "react-i18next";
 
 type ServiceOption = "LOGISTICS" | "ACCOUNTING" | "CONSULTING" | "ALL THREE";
 const SERVICE_OPTIONS: ServiceOption[] = ["LOGISTICS", "ACCOUNTING", "CONSULTING", "ALL THREE"];
-type FormState = { name: string; company: string; email: string; message: string; service: ServiceOption | ""; };
+type FormState = { name: string; company: string; phone: string; telegram: string; email: string; message: string; service: ServiceOption | ""; };
 const ACCENT: Record<ServiceOption, string> = { LOGISTICS: "#6395ff", ACCOUNTING: "#dcb25a", CONSULTING: "#c4c4c4", "ALL THREE": "#ffffff" };
 
 const API_BASE = import.meta.env.VITE_ADMIN_API_URL ?? "";
 
 export default function ContactForm() {
   const { t } = useTranslation("common");
-  const [form, setForm] = useState<FormState>({ name: "", company: "", email: "", message: "", service: "" });
+  const [form, setForm] = useState<FormState>({ name: "", company: "", phone: "", telegram: "", email: "", message: "", service: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -23,6 +23,7 @@ export default function ContactForm() {
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = t("contact.errorEmail");
     if (!form.message.trim()) errs.message = t("contact.errorRequired");
     if (!form.service) errs.service = t("contact.errorService");
+    if (form.phone.trim() && !/^\+?[\d\s\-()]{7,}$/.test(form.phone.trim())) errs.phone = t("contact.errorPhone");
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -61,7 +62,7 @@ export default function ContactForm() {
             <p className="text-[9px] tracking-[0.3em] text-white/30 uppercase">{t("contact.successEyebrow")}</p>
             <h3 className="text-[clamp(24px,3vw,40px)] font-bold tracking-[-0.02em] text-white">{t("contact.successTitle")} <span style={{ color: accentColor }}>{t("contact.successTitleAccent")}</span></h3>
             <p className="text-[14px] text-white/40 font-light max-w-xs mx-auto">{t("contact.successDesc")}</p>
-            <button onClick={() => { setSubmitted(false); setForm({ name: "", company: "", email: "", message: "", service: "" }); }} className="mt-6 text-[10px] tracking-[0.25em] uppercase text-white/30 hover:text-white/60 transition-colors duration-300 border-b border-white/10 hover:border-white/30 pb-0.5">{t("contact.sendAnother")}</button>
+            <button onClick={() => { setSubmitted(false); setForm({ name: "", company: "", phone: "", telegram: "", email: "", message: "", service: "" }); }} className="mt-6 text-[10px] tracking-[0.25em] uppercase text-white/30 hover:text-white/60 transition-colors duration-300 border-b border-white/10 hover:border-white/30 pb-0.5">{t("contact.sendAnother")}</button>
           </motion.div>
         ) : (
           <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={(e) => { void handleSubmit(e); }} className="space-y-6">
@@ -77,6 +78,10 @@ export default function ContactForm() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field label={t("contact.name")} placeholder="John Smith" value={form.name} error={errors.name} onChange={(v) => { setForm((f) => ({ ...f, name: v })); setErrors((er) => ({ ...er, name: "" })); }} accentColor={accentColor} />
               <Field label={t("contact.company")} placeholder="Acme Corp" value={form.company} onChange={(v) => setForm((f) => ({ ...f, company: v }))} accentColor={accentColor} />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Field label={t("contact.phone")} placeholder="+998 90 000 00 00" value={form.phone} error={errors.phone} onChange={(v) => { setForm((f) => ({ ...f, phone: v })); setErrors((er) => ({ ...er, phone: "" })); }} type="tel" accentColor={accentColor} />
+              <Field label={t("contact.telegram")} placeholder="@username" value={form.telegram} onChange={(v) => setForm((f) => ({ ...f, telegram: v }))} accentColor={accentColor} />
             </div>
             <Field label={t("contact.email")} placeholder="example@gmail.com" value={form.email} error={errors.email} onChange={(v) => { setForm((f) => ({ ...f, email: v })); setErrors((er) => ({ ...er, email: "" })); }} type="email" accentColor={accentColor} />
             <div>

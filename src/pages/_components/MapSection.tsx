@@ -1,5 +1,6 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 const ADDRESS = "просп. Мустакиллик, 24, Ташкент";
 const MAP_URL =
@@ -10,6 +11,7 @@ const EMBED_URL =
 export default function MapSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
+  const { t } = useTranslation();
 
   return (
     <section ref={ref} className="relative px-6 md:px-16 lg:px-24 py-24">
@@ -22,7 +24,7 @@ export default function MapSection() {
             transition={{ duration: 0.5 }}
             className="text-[10px] tracking-[0.4em] text-white/25 uppercase mb-3"
           >
-            НАШ АДРЕС
+            {t("map.eyebrow")}
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
@@ -30,9 +32,9 @@ export default function MapSection() {
             transition={{ duration: 0.55, delay: 0.07 }}
             className="text-[clamp(28px,4vw,52px)] font-light tracking-[-0.02em] leading-tight"
           >
-            МЫ НАХОДИМСЯ
+            {t("map.title")}
             <br />
-            <span className="text-white/25">В ТАШКЕНТЕ.</span>
+            <span className="text-white/25">{t("map.titleFaded")}</span>
           </motion.h2>
         </div>
         <motion.a
@@ -62,7 +64,7 @@ export default function MapSection() {
         className="max-w-[1400px] mx-auto relative overflow-hidden rounded-2xl"
         style={{ height: "clamp(320px, 45vw, 580px)" }}
       >
-        {/* Decorative vignette overlay — makes the map feel atmospheric */}
+        {/* Decorative vignette overlay */}
         <div
           className="absolute inset-0 z-10 pointer-events-none"
           style={{
@@ -70,7 +72,6 @@ export default function MapSection() {
               "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 40%, oklch(0.08 0 0) 100%)",
           }}
         />
-        {/* Top/bottom fades to blend with the page */}
         <div className="absolute top-0 left-0 right-0 h-16 z-10 pointer-events-none" style={{ background: "linear-gradient(to bottom, oklch(0.08 0 0), transparent)" }} />
         <div className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to top, oklch(0.08 0 0), transparent)" }} />
 

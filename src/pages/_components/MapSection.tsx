@@ -5,8 +5,10 @@ import { useTranslation } from "react-i18next";
 const ADDRESS = "просп. Мустакиллик, 24, Ташкент";
 const MAP_URL =
   "https://yandex.ru/maps?text=41.315843,69.292294&si=981f5g03pp162cvrkw79eq8kdw";
+// pt= параметр убран — встроенная метка двигалась вместе с картой.
+// Вместо неё используется статичный HTML-бейдж поверх iframe.
 const EMBED_URL =
-  "https://yandex.ru/map-widget/v1/?ll=69.292294%2C41.315843&z=15&pt=69.292294,41.315843,pm2rdm&lang=ru_RU&theme=dark&scroll=false";
+  "https://yandex.ru/map-widget/v1/?ll=69.292294%2C41.315843&z=15&lang=ru_RU&theme=dark&scroll=false";
 
 export default function MapSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -64,7 +66,17 @@ export default function MapSection() {
         className="max-w-[1400px] mx-auto relative overflow-hidden rounded-2xl"
         style={{ height: "clamp(320px, 45vw, 580px)" }}
       >
-        {/* Decorative vignette overlay */}
+        {/* Yandex iframe */}
+        <iframe
+          src={EMBED_URL}
+          title="TRIO GROUPS на карте"
+          className="absolute inset-0 w-full h-full border-0"
+          style={{ filter: "saturate(0.4) brightness(0.55) contrast(1.1)" }}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+
+        {/* Decorative vignette overlay — поверх карты, ниже пина */}
         <div
           className="absolute inset-0 z-10 pointer-events-none"
           style={{
@@ -75,7 +87,10 @@ export default function MapSection() {
         <div className="absolute top-0 left-0 right-0 h-16 z-10 pointer-events-none" style={{ background: "linear-gradient(to bottom, oklch(0.08 0 0), transparent)" }} />
         <div className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to top, oklch(0.08 0 0), transparent)" }} />
 
-        {/* Pin badge centered */}
+        {/*
+          Статичный пин — позиционирован через CSS относительно контейнера,
+          не связан с координатами карты, не двигается при панорамировании.
+        */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+18px)] z-20 pointer-events-none flex flex-col items-center gap-1">
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
@@ -89,16 +104,6 @@ export default function MapSection() {
           <div className="w-[1.5px] h-4 bg-gradient-to-b from-white/30 to-transparent" />
           <div className="w-2 h-2 rounded-full bg-white/60 shadow-[0_0_12px_4px_rgba(255,255,255,0.25)]" />
         </div>
-
-        {/* Yandex iframe */}
-        <iframe
-          src={EMBED_URL}
-          title="TRIO GROUPS на карте"
-          className="absolute inset-0 w-full h-full border-0"
-          style={{ filter: "saturate(0.4) brightness(0.55) contrast(1.1)" }}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
       </motion.div>
     </section>
   );

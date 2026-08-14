@@ -43,11 +43,11 @@ export default function Navigation() {
           >
             <img
               src="https://hercules-cdn.com/file_exMhy8nexpXEXJmG0mlYSQKH"
-              alt="TRIO GROUPS"
+              alt="TRIO GROUP"
               className="h-8 w-8 object-contain select-none flex-shrink-0 transition-all duration-500 group-hover:drop-shadow-[0_0_10px_rgba(99,149,255,0.5)]"
               draggable={false}
             />
-            <span className="text-[13px] font-semibold tracking-[0.2em] text-white uppercase">TRIO GROUPS</span>
+            <span className="text-[13px] font-semibold tracking-[0.2em] text-white uppercase">TRIO GROUP</span>
           </a>
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (

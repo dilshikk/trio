@@ -78,15 +78,15 @@
   "details.3.b4.body": "Постановка целей, приоритетов, показателей и этапов реализации для устойчивого развития.",
   "details.3.integration": "Консалтинговые проекты используют данные TRIO Logistics для бенчмаркинга и финансы TRIO Accounting для моделирования.",
 
-  "about.eyebrow": "О TRIO GROUP",
+  "about.eyebrow": "О TRIO GROUPS",
   "about.title": "ТРИ НАПРАВЛЕНИЯ.",
   "about.titleFaded": "ЕДИНАЯ БИЗНЕС-ЭКОСИСТЕМА.",
-  "about.p1": "TRIO GROUP объединяет три направления — Logistics, Accounting и Consulting. Мы создаём практичные B2B-решения для компаний, которым важны скорость, прозрачность и ответственность.",
+  "about.p1": "TRIO GROUPS объединяет три направления — Logistics, Accounting и Consulting. Мы создаём практичные B2B-решения для компаний, которым важны скорость, прозрачность и ответственность.",
   "about.p2": "Каждое направление работает как самостоятельная экспертная функция, а при комплексных задачах команды объединяются в единую систему без пробелов и лишних согласований.",
   "about.logistics.desc": "Перевозки, маршруты, таможня",
   "about.accounting.desc": "Учёт, налоги, отчётность",
   "about.consulting.desc": "Диагностика, процессы, рост",
-  "about.why": "ПОЧЕМУ TRIO GROUP",
+  "about.why": "ПОЧЕМУ TRIO GROUPS",
   "about.p.integrated": "ОТВЕТСТВЕННОСТЬ",
   "about.p.integrated.desc": "Фиксируем задачу, сроки и ответственных. Исполняем в срок.",
   "about.p.precise": "ТОЧНОСТЬ",
@@ -163,5 +163,5 @@
   "footer.terms": "Условия",
   "footer.linkedin": "LinkedIn",
   "footer.twitter": "Twitter",
-  "footer.copyright": "© {{year}} TRIO GROUP. Все права защищены."
+  "footer.copyright": "© {{year}} TRIO GROUPS. Все права защищены."
 }

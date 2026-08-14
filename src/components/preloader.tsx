@@ -64,7 +64,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
             transition={{ duration: 2.6, times: [0, 0.22, 0.72, 1], ease: [0.16, 1, 0.3, 1] as const, delay: 0.15 }}
           >
             <img
-              src="https://hercules-cdn.com/file_exMhy8nexpXEXJmG0mlYSQKH"
+              src="https://hercules-cdn.com/file_w4ZtbBGahZ97utUXzF4gFXcB"
               alt="TRIO GROUPS"
               className="w-[560px] h-[560px] object-contain select-none"
               style={{

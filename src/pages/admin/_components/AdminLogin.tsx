@@ -140,7 +140,7 @@ export default function AdminLogin({ onLogin }: Props) {
               <div className="relative">
                 <motion.div className="absolute inset-0 rounded-full blur-xl" style={{ background: "linear-gradient(135deg, #6395ff, #a78bfa)" }} animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" as const }} />
                 <div className="relative w-16 h-16 rounded-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, #1a1a2e, #16213e)" }}>
-                  <img src="https://hercules-cdn.com/file_exMhy8nexpXEXJmG0mlYSQKH" alt="TRIO GROUPS" className="w-9 h-9 object-contain" />
+                  <img src="https://hercules-cdn.com/file_w4ZtbBGahZ97utUXzF4gFXcB" alt="TRIO GROUPS" className="w-9 h-9 object-contain" />
                 </div>
               </div>
               <div className="text-center">

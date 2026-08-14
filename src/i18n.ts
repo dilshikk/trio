@@ -4,7 +4,6 @@ import { initReactI18next } from "react-i18next";
 export const SUPPORTED_LOCALES = {
   en: { code: "en", emoji: "🇬🇧", name: "English", nativeName: "English", dir: "ltr" },
   ru: { code: "ru", emoji: "🇷🇺", name: "Russian", nativeName: "Русский", dir: "ltr" },
-  uz: { code: "uz", emoji: "🇺🇿", name: "Uzbek (Cyrillic)", nativeName: "Ўзбекча", dir: "ltr" },
   oz: { code: "oz", emoji: "🇺🇿", name: "Uzbek (Latin)", nativeName: "O'zbekcha", dir: "ltr" },
 } as const;
 

@@ -78,15 +78,15 @@
   "details.3.b4.body": "Setting goals, priorities, metrics, and implementation phases for sustainable development.",
   "details.3.integration": "Consulting engagements draw on TRIO Logistics data for benchmarking and TRIO Accounting financials for modelling.",
 
-  "about.eyebrow": "ABOUT TRIO GROUP",
+  "about.eyebrow": "ABOUT TRIO GROUPS",
   "about.title": "THREE DIRECTIONS.",
   "about.titleFaded": "ONE BUSINESS ECOSYSTEM.",
-  "about.p1": "TRIO GROUP brings together three disciplines — Logistics, Accounting, and Consulting. We create practical B2B solutions for companies that value speed, transparency, and accountability.",
+  "about.p1": "TRIO GROUPS brings together three disciplines — Logistics, Accounting, and Consulting. We create practical B2B solutions for companies that value speed, transparency, and accountability.",
   "about.p2": "Each discipline operates as an independent expert function, and for complex tasks the teams unite into a single system without gaps or unnecessary coordination.",
   "about.logistics.desc": "Freight, routes, customs",
   "about.accounting.desc": "Bookkeeping, taxes, reporting",
   "about.consulting.desc": "Diagnostics, processes, growth",
-  "about.why": "WHY TRIO GROUP",
+  "about.why": "WHY TRIO GROUPS",
   "about.p.integrated": "ACCOUNTABILITY",
   "about.p.integrated.desc": "We define the task, deadlines, and responsible parties. We deliver.",
   "about.p.precise": "PRECISION",
@@ -163,5 +163,5 @@
   "footer.terms": "Terms",
   "footer.linkedin": "LinkedIn",
   "footer.twitter": "Twitter",
-  "footer.copyright": "© {{year}} TRIO GROUP. All rights reserved."
+  "footer.copyright": "© {{year}} TRIO GROUPS. All rights reserved."
 }

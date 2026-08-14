@@ -1,15 +1,18 @@
 import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import EditableText from "@/components/editable-text.tsx";
 import LocaleSwitcher from "@/components/locale-switcher.tsx";
 
-const navLinks = [
-  { key: "nav.logistics", href: "#logistics" },
-  { key: "nav.accounting", href: "#accounting" },
-  { key: "nav.consulting", href: "#consulting" },
-  { key: "nav.about", href: "#about" },
-  { key: "nav.contact", href: "#contact" },
+const SUPPORTED_LOCALES = ["ru", "uz", "en", "oz"];
+
+const NAV_LINKS = [
+  { key: "nav.logistics", path: "/logistics" },
+  { key: "nav.accounting", path: "/accounting" },
+  { key: "nav.consulting", path: "/consulting" },
+  { key: "nav.about", path: "/about" },
+  { key: "nav.contact", path: "/contact" },
 ];
 
 export default function Navigation() {
@@ -17,13 +20,9 @@ export default function Navigation() {
   const { scrollY } = useScroll();
   const { t } = useTranslation("common");
   void t;
+  const { locale } = useParams<{ locale?: string }>();
+  const prefix = locale && SUPPORTED_LOCALES.includes(locale) ? `/${locale}` : "";
   const bgOpacity = useTransform(scrollY, [0, 120], [0, 1]);
-
-  const handleNavClick = (href: string) => {
-    setMenuOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <>
@@ -36,40 +35,44 @@ export default function Navigation() {
           style={{ opacity: bgOpacity, background: "oklch(0.08 0 0 / 0.85)", backdropFilter: "blur(20px)" }}
         />
         <div className="relative flex items-center justify-between max-w-[1600px] mx-auto">
-          <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          <Link
+            to={`${prefix}/`}
             className="flex items-center gap-3 group cursor-pointer"
           >
             <img
               src="/images/logo.png"
-              alt="TRIO GROUPS"
+              alt="TRIO GROUP"
               className="h-8 w-8 object-contain select-none flex-shrink-0 transition-all duration-500 group-hover:drop-shadow-[0_0_10px_rgba(99,149,255,0.5)]"
               draggable={false}
             />
-            <span className="text-[13px] font-semibold tracking-[0.2em] text-white uppercase">TRIO GROUPS</span>
-          </a>
+            <span className="text-[13px] font-semibold tracking-[0.2em] text-white uppercase">TRIO GROUP</span>
+          </Link>
+
+          {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
+            {NAV_LINKS.map((link) => (
+              <Link
                 key={link.key}
-                href={link.href}
-                onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
+                to={`${prefix}${link.path}`}
+                onClick={() => setMenuOpen(false)}
                 className="text-[11px] font-medium tracking-[0.18em] text-white/50 hover:text-white/90 transition-colors duration-300 uppercase cursor-pointer"
               >
                 <EditableText tKey={link.key} />
-              </a>
+              </Link>
             ))}
           </div>
+
           <div className="hidden lg:flex items-center gap-4">
             <LocaleSwitcher />
-            <button
-              onClick={() => handleNavClick("#contact")}
+            <Link
+              to={`${prefix}/contact`}
               className="text-[11px] font-semibold tracking-[0.2em] uppercase border border-white/20 text-white/80 hover:border-white/60 hover:text-white transition-all duration-300 px-5 py-2.5 rounded-sm cursor-pointer"
             >
               <EditableText tKey="nav.cta" />
-            </button>
+            </Link>
           </div>
+
+          {/* Mobile burger */}
           <div className="flex lg:hidden items-center gap-3">
             <LocaleSwitcher />
             <button
@@ -84,6 +87,8 @@ export default function Navigation() {
           </div>
         </div>
       </motion.nav>
+
+      {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -94,28 +99,31 @@ export default function Navigation() {
             className="fixed inset-0 z-40 flex flex-col justify-center items-center gap-8 lg:hidden"
             style={{ background: "oklch(0.08 0 0 / 0.97)", backdropFilter: "blur(20px)" }}
           >
-            {navLinks.map((link, i) => (
-              <motion.a
+            {NAV_LINKS.map((link, i) => (
+              <motion.div
                 key={link.key}
-                href={link.href}
-                onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06, duration: 0.4 }}
-                className="text-3xl font-light tracking-[0.25em] text-white/70 hover:text-white transition-colors uppercase cursor-pointer"
               >
-                <EditableText tKey={link.key} />
-              </motion.a>
+                <Link
+                  to={`${prefix}${link.path}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="text-3xl font-light tracking-[0.25em] text-white/70 hover:text-white transition-colors uppercase cursor-pointer"
+                >
+                  <EditableText tKey={link.key} />
+                </Link>
+              </motion.div>
             ))}
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              onClick={() => handleNavClick("#contact")}
-              className="mt-4 text-[11px] font-semibold tracking-[0.25em] uppercase border border-white/20 text-white/80 px-8 py-3 cursor-pointer"
-            >
-              <EditableText tKey="nav.cta" />
-            </motion.button>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
+              <Link
+                to={`${prefix}/contact`}
+                onClick={() => setMenuOpen(false)}
+                className="mt-4 text-[11px] font-semibold tracking-[0.25em] uppercase border border-white/20 text-white/80 px-8 py-3 cursor-pointer block"
+              >
+                <EditableText tKey="nav.cta" />
+              </Link>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
